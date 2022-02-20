@@ -1,32 +1,53 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+<div class="App">
+  <div id="main-widow">
+    <div class="links">
+      <h1>Bitter</h1>
+      <router-link to="/">О нас </router-link>
+      <router-link to="/gosti">Гости</router-link>
+      <router-link to="/hashtags">Хэштеги</router-link>
     </div>
-    <router-view/>
+    <div class="form">
+      <form action="">
+        <input type="text" name="post-body" placeholder="Сообщение" v-model="tweet">
+        <br>
+        <button type="submit" v-on:click="postTweet">Отправить</button>
+      </form>
+      <hr>
+    </div>
   </div>
+  <router-view></router-view>
+</div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style scoped>
 
-#nav {
-  padding: 30px;
-}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
+<script>
+import axios from "axios";
+import DefaultLayout from "./layouts/layout";
+export default {
+  data: () => ({
+    id: 1,
+    tweet:"",
+  }),
+  components: {DefaultLayout},
+  methods:{
+
+    postTweet:function (){
+      axios.post('http://127.0.0.1:8000/api/addTweet',{'id':this.id, 'tweet':this.tweet})
+          .then(response => {
+            alert(response)
+          })
+          .catch(e => {
+            this.errors.push(e)
+
+          })
+  },
+
+
+  }
+}
+</script>
